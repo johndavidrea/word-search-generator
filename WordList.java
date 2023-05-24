@@ -9,12 +9,12 @@ public class WordList {
     private int longest;
 
     public WordList() {
+        input = new Scanner(System.in);
         wordList = new ArrayList<>();
         longest = 0;
     }
 
     public void configure() {
-        input = new Scanner(System.in);
         isRunning = true;
 
         printHelp();
@@ -22,7 +22,6 @@ public class WordList {
         while (isRunning) {
             getCommand();
         }
-        input.close();
     }
 
     private void getCommand() {
@@ -225,7 +224,11 @@ public class WordList {
         System.out.println("[8] Save your word list and continue");
     }
 
-    private int getLongest() {
+    public int getLongest() {
         return longest;
+    }
+
+    public ArrayList<String> getWordList() {
+        return wordList;
     }
 }
