@@ -17,6 +17,7 @@ public class WordLocation {
         overlapCount = 0;
     }
 
+
     public void setPoint(Point point) {
         this.point = point;
     }
@@ -50,6 +51,6 @@ public class WordLocation {
     }
 
     public String toString() {
-        return (word + " starts at " + point.toString() + " and points " + direction);
+        return (word + " starts at (x=" + (point.x + 1) + ", y=" + (point.y + 1) + ") and points " + direction);
     }
 }

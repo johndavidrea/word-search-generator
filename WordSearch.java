@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WordSearch {
-    private WordList list;
+    public WordList list;
     private Scanner input;
     private boolean isRunning;
     public char[][] grid;
@@ -63,6 +63,11 @@ public class WordSearch {
         list.configure();
         configureSearch();
         fillSearch();
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                solutionGrid[i][j] = grid[i][j];
+            }
+        }
         populateSearch(grid, true);
         populateSearch(solutionGrid, false);
     }
@@ -71,11 +76,11 @@ public class WordSearch {
         solutions = new ArrayList<>();
         // WIP
 
-        width = 8;
-        height = 8;
+        width = 20;
+        height = 20;
 
-        grid = new char[width][height];
-        solutionGrid = new char[width][height];
+        grid = new char[height][width];
+        solutionGrid = new char[height][width];
 
         overlapChance = 100;
     }
@@ -93,7 +98,7 @@ public class WordSearch {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 for (Direction direction : Direction.values()) {
-                    WordLocation buffer = new WordLocation(new Point(i, j), direction, word);
+                    WordLocation buffer = new WordLocation(new Point(j, i), direction, word);
                     if(validate(buffer) != null) {
                         if(buffer.getOverlapCount() <= 0) {
                             nonOverlappingWords.add(buffer);
@@ -125,7 +130,7 @@ public class WordSearch {
         // output each letter of the word to the grid
         Point bufferPoint = new Point(wordLocation.getPoint().x, wordLocation.getPoint().y);
         for (int i = 0; i < wordLocation.getWord().length(); i++) {
-            grid[bufferPoint.x][bufferPoint.y] = wordLocation.getWord().charAt(i);
+            grid[bufferPoint.y][bufferPoint.x] = wordLocation.getWord().charAt(i);
             // Adjust bufferPoint accordingly as we iterate through the word
             bufferPoint.x += wordLocation.getDirection().xOffset;
             bufferPoint.y += wordLocation.getDirection().yOffset;
@@ -140,7 +145,7 @@ public class WordSearch {
                     if (random) {
                         array[i][j] = (char) ThreadLocalRandom.current().nextInt(97, 123);
                     } else {
-                        array[i][j] = 'x';
+                        array[i][j] = ' ';
                     }
                 }
             }
@@ -159,9 +164,9 @@ public class WordSearch {
 
         // validate each letter of the word comparing it to the grid
         for (int i = 0; i < wordLocation.getWord().length(); i++) {
-            if (grid[bufferPoint.x][bufferPoint.y] == '\u0000') {
+            if (grid[bufferPoint.y][bufferPoint.x] == '\u0000') {
 
-            } else if (grid[bufferPoint.x][bufferPoint.y] != wordLocation.getWord().charAt(i)) {
+            } else if (grid[bufferPoint.y][bufferPoint.x] != wordLocation.getWord().charAt(i)) {
                 return null;
             } else {
                 wordLocation.incrementOverlapCount();
@@ -212,6 +217,10 @@ public class WordSearch {
         for (WordLocation wordLocation : solutions) printWriter.println(wordLocation);
 
         printWriter.close();
+    }
+
+    public void clearWordSearch() {
+
     }
 
     public void printGrid(char[][] array) {

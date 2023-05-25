@@ -52,7 +52,7 @@ public class WordList {
         System.out.println("What would you like to do next?");
     }
 
-    private void addWord(String word) {
+    public void addWord(String word) {
         if (word.matches("[a-zA-Z]+")) {
             wordList.add(word.toLowerCase());
             System.out.println(word + " was added to the list.");
